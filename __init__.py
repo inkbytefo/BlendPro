@@ -9,7 +9,7 @@ libs_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "lib")
 if libs_path not in sys.path:
     sys.path.append(libs_path)
 
-import openai
+from openai import OpenAI
 
 from .utilities import *
 bl_info = {
@@ -159,19 +159,19 @@ class GPT4_OT_Execute(bpy.types.Operator):
     )
 
     def execute(self, context):
-        openai.api_key = get_api_key(context, __name__)
+        api_key = get_api_key(context, __name__)
         # if null then set to env key
-        if not openai.api_key:
-            openai.api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            api_key = os.getenv("OPENAI_API_KEY")
 
-        if not openai.api_key:
-            self.report({'ERROR'}, "No API key detected. Please set the API key in the addon preferences.")
+        if not api_key:
+            self.report({'ERROR'}, "No OpenAI API key detected. Please set the API key in the addon preferences or OPENAI_API_KEY environment variable.")
             return {'CANCELLED'}
 
         context.scene.gpt4_button_pressed = True
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
         
-        blender_code = generate_blender_code(context.scene.gpt4_chat_input, context.scene.gpt4_chat_history, context, system_prompt)
+        blender_code = generate_blender_code(context.scene.gpt4_chat_input, context.scene.gpt4_chat_history, context, system_prompt, api_key)
 
         message = context.scene.gpt4_chat_history.add()
         message.type = 'user'
@@ -187,9 +187,17 @@ class GPT4_OT_Execute(bpy.types.Operator):
             message.content = blender_code
 
             global_namespace = globals().copy()
+        else:
+            self.report({'ERROR'}, "Failed to generate code. Please check your API key and try again.")
+            context.scene.gpt4_button_pressed = False
+            return {'CANCELLED'}
     
         try:
             exec(blender_code, global_namespace)
+        except SyntaxError as e:
+            self.report({'ERROR'}, f"Syntax error in generated code: {e}")
+            context.scene.gpt4_button_pressed = False
+            return {'CANCELLED'}
         except Exception as e:
             self.report({'ERROR'}, f"Error executing generated code: {e}")
             context.scene.gpt4_button_pressed = False
@@ -213,10 +221,24 @@ class GPT4AddonPreferences(bpy.types.AddonPreferences):
         default="",
         subtype="PASSWORD",
     )
+    
+    custom_base_url: bpy.props.StringProperty(
+        name="Custom Base URL",
+        description="Custom OpenAI-compatible API base URL (leave empty for default OpenAI)",
+        default="",
+    )
+    
+    custom_model: bpy.props.StringProperty(
+        name="Model Name",
+        description="Model name to use (e.g., gpt-4, gpt-3.5-turbo, or custom model)",
+        default="gpt-4",
+    )
 
     def draw(self, context):
         layout = self.layout
         layout.prop(self, "api_key")
+        layout.prop(self, "custom_base_url")
+        layout.prop(self, "custom_model")
 
 def register():
     bpy.utils.register_class(GPT4AddonPreferences)
