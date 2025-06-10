@@ -1,6 +1,4 @@
 # BlenderGPT
-![Header](https://user-images.githubusercontent.com/63528145/227160213-6862cd5e-b31f-43ea-a5e5-6cc340a95617.png)
-
 ![Whisk_40e71a9926](https://github.com/user-attachments/assets/868e0b1c-2811-4927-b1d9-fff1328b61fd)
 
 
