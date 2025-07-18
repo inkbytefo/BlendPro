@@ -1,0 +1,60 @@
+# BlendPro: AI Co-Pilot Requirements
+# Core dependencies for advanced AI assistant functionality
+
+# HTTP Requests and API Communication
+requests>=2.31.0
+urllib3>=2.0.0
+
+# JSON Processing and Data Handling
+json5>=0.9.0
+
+# Image Processing (for screenshot and vision features)
+Pillow>=10.0.0
+
+# Numerical Computing (for scene analysis and spatial calculations)
+numpy>=1.24.0
+
+# Optional: Enhanced JSON parsing
+orjson>=3.9.0
+
+# Optional: Advanced HTTP client with better performance
+httpx>=0.24.0
+
+# Optional: Async support for non-blocking operations
+aiohttp>=3.8.0
+
+# Optional: Better date/time handling
+python-dateutil>=2.8.0
+
+# Optional: Enhanced logging capabilities
+colorlog>=6.7.0
+
+# Development Dependencies (for contributors)
+# Uncomment if developing/contributing to BlendPro
+
+# Code Quality
+# black>=23.0.0
+# flake8>=6.0.0
+# mypy>=1.5.0
+
+# Testing
+# pytest>=7.4.0
+# pytest-asyncio>=0.21.0
+
+# Documentation
+# sphinx>=7.1.0
+# sphinx-rtd-theme>=1.3.0
+
+# Note: Blender includes its own Python environment
+# These packages should be installed in Blender's Python environment
+# 
+# Installation methods:
+# 1. Use Blender's pip: /path/to/blender/python/bin/pip install -r requirements.txt
+# 2. Use the addon's built-in installer (if implemented)
+# 3. Manual installation through Blender's Python console
+#
+# For Blender 3.0+, Python version is typically 3.10+
+# For Blender 4.0+, Python version is typically 3.11+
+
+# Minimum Python version: 3.10
+# Tested with Blender 3.0+ and 4.0+
