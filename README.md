@@ -1,5 +1,7 @@
 # BlendPro: AI Co-Pilot v2.0.0
 
+![Whisk_18340afb71](https://github.com/user-attachments/assets/51ffe9dd-521d-42de-8057-6ce5437762c2)
+
 **Advanced AI assistant with multi-modal capabilities, proactive suggestions, and intelligent workflow optimization for Blender**
 
 ## 🚀 New Features in v2.0.0
